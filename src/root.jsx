@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Table from "./components/table";
 import TableWithData from "./components/table-with-data";
-import { Container } from "./styles/global.stc";
 
 const Root = () => {
   // DATA
@@ -14,9 +13,9 @@ const Root = () => {
 
   useEffect(() => {
     /*
-    * Fetching data from api. this part can also be done seperately if 
-    * sate management applied
-    */
+     * Fetching data from api. this part can also be done seperately if
+     * sate management applied
+     */
     (async () => {
       const fetch_url = `https://jsonplaceholder.typicode.com/posts?_page=${page}&_limit=${limit}`;
       const res = await axios.get(fetch_url);
@@ -28,9 +27,8 @@ const Root = () => {
   const handlePrev = () => setPage(page - 1);
   const updateLimit = (val) => setLimit(parseInt(val));
 
-
   return (
-    <Container>
+    <div className="container">
       {/* Table info for type 1*/}
       <h2 className="head">Table Type - 1</h2>
       <p className="info">
@@ -43,11 +41,21 @@ const Root = () => {
         component as
         <span className="detail">updateAction</span> and{" "}
         <span className="detail"> deleteAction</span> props respectively
+        <span className="detail">filter_param</span> (field for secondary
+        filter)
       </p>
 
       {/* table component */}
-      <Table title="Users" url="https://jsonplaceholder.typicode.com/users" />
-      <Table title="Posts" url="https://jsonplaceholder.typicode.com/posts" />
+      <Table
+        title="Users"
+        url="https://jsonplaceholder.typicode.com/users"
+        filter_param="name"
+      />
+      <Table
+        title="Posts"
+        url="https://jsonplaceholder.typicode.com/posts"
+        filter_param="title"
+      />
 
       {/* table info for type 2 */}
       <h2 className="head">Table Type - 2</h2>
@@ -66,6 +74,8 @@ const Root = () => {
         data)
         <span className="detail">updateLimit</span> (Update Limit of data to
         show)
+        <span className="detail">filter_param</span> (field for secondary
+        filter)
       </p>
 
       <p className="info">
@@ -83,8 +93,9 @@ const Root = () => {
         next={handleNext}
         prev={handlePrev}
         updateLimit={updateLimit}
+        filter_param="title"
       />
-    </Container>
+    </div>
   );
 };
 export default Root;

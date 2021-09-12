@@ -1,15 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { ActionButton } from "../styles/global.stc";
-import {
-  TableHeader,
-  Wrap,
-  TableSTC,
-  TableFooter,
-  TableFilter,
-} from "../styles/table.stc";
 
-const Table = ({ title, url, updateAction, deleteAction }) => {
+const Table = ({ title, url, updateAction, deleteAction, filter_param }) => {
   // Number of data to fetch
   const [limit, setLimit] = useState(15);
   // Pagination page number
@@ -18,14 +10,23 @@ const Table = ({ title, url, updateAction, deleteAction }) => {
   const [data, setData] = useState(null);
   // store search query here
   const [query, setQuery] = useState("");
-
+  const [secondQuery, setSecondQuery] = useState("");
   /*
     filtering data if search query available
   */
-  const filtered =
-    data !== null && query.length > 0
-      ? data.filter((i) => i.id === parseInt(query))
-      : data;
+  const filtered = (data) => {
+    if (query.length > 0) {
+      return data.filter((i) => i.id === parseInt(query));
+    } else if (secondQuery.length > 0) {
+      return data.filter((i) =>
+        i[`${filter_param}`]
+          .toLowerCase()
+          .includes(secondQuery.toLowerCase())
+      );
+    } else {
+      return data;
+    }
+  };
 
   useEffect(() => {
     /*
@@ -87,33 +88,42 @@ const Table = ({ title, url, updateAction, deleteAction }) => {
           </td>
         ))}
         <td>
-          <ActionButton onClick={updateAction}>Update</ActionButton>
+          <button className="action-btn" onClick={updateAction}>
+            Update
+          </button>
         </td>
         <td>
-          <ActionButton onClick={deleteAction}>Delete</ActionButton>
+          <button className="action-btn" onClick={deleteAction}>
+            Delete
+          </button>
         </td>
       </tr>
     );
   };
 
   return (
-    <Wrap>
-      <TableHeader>
+    <div className="table-wrap">
+      <div className="table-header">
         <h3>{title}</h3>
-        <TableFilter>
+        <div className="table-filter">
           <input
             type="number"
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search By Id"
           />
-        </TableFilter>
-      </TableHeader>
+          <input
+            type="text"
+            onChange={(e) => setSecondQuery(e.target.value)}
+            placeholder={`Search By ${filter_param}`}
+          />
+        </div>
+      </div>
       {data && data.length > 0 ? (
-        <TableSTC cellPadding={0} cellSpacing={0}>
+        <table cellPadding={0} cellSpacing={0}>
           <thead>{renderTableHeader(data)}</thead>
           <tbody>
-            {filtered.length > 0 ? (
-              filtered.map((item, key) => renderTableBody(item, key))
+            {filtered(data).length > 0 ? (
+              filtered(data).map((item, key) => renderTableBody(item, key))
             ) : (
               <tr>
                 <td>
@@ -122,7 +132,7 @@ const Table = ({ title, url, updateAction, deleteAction }) => {
               </tr>
             )}
           </tbody>
-        </TableSTC>
+        </table>
       ) : (
         <h3>
           {data
@@ -132,24 +142,31 @@ const Table = ({ title, url, updateAction, deleteAction }) => {
             : "Loading"}
         </h3>
       )}
-      <TableFooter>
-        <h3>On Page {page}</h3>
+      <div className="table-footer">
+        <h3>
+          {data && data.length === limit
+            ? "Page " + page + " of " + Math.round(200 / limit)
+            : "Page " + page}
+        </h3>
         <div className="btns">
           {/* show previous button if page is greater than 1 */}
+
           {page > 1 ? (
-            <ActionButton onClick={() => setPage(page - 1)}>
+            <button className="action-btn" onClick={() => setPage(page - 1)}>
               PREVIOUS
-            </ActionButton>
+            </button>
           ) : (
             ""
           )}
           {/* show next button if data is equal to limit */}
-          {filtered && filtered.length < limit ? (
+          {filtered(data) && filtered(data).length < limit ? (
             ""
           ) : (
-            <ActionButton onClick={() => setPage(page + 1)}>NEXT</ActionButton>
+            <button className="action-btn" onClick={() => setPage(page + 1)}>
+              NEXT
+            </button>
           )}
-          {filtered && filtered.length < limit ? (
+          {filtered(data) && filtered(data).length < limit ? (
             ""
           ) : (
             <select
@@ -163,8 +180,8 @@ const Table = ({ title, url, updateAction, deleteAction }) => {
             </select>
           )}
         </div>
-      </TableFooter>
-    </Wrap>
+      </div>
+    </div>
   );
 };
 

@@ -1,70 +1,101 @@
-# Getting Started with Create React App
+# CS FS - 1
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A basic react table component. This project holds 2 table component.
+one for easy implementation with just api passed as parameter to fetch data and display on its own
+another one is for implementation with state management where you fetch data seperately and pass it as props
 
-## Available Scripts
+## Table Type - 1
 
-In the project directory, you can run:
+### implementation
 
-### `yarn start`
+```jsx
+<Table
+  title="Users"
+  url="https://jsonplaceholder.typicode.com/users"
+  filter_param="name"
+/>
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Props
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+| name         | prop type | isRequired | desciption                   |
+|--------------|-----------|------------|------------------------------|
+| title        | string    | true       | table title                  |
+| url          | string    | true       | api url                      |
+| filter_param | string    | true       | field name for second filter |
 
-### `yarn test`
+### Use case
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+When you have full controll over the api or no state management is needed.
 
-### `yarn build`
+## Table Type - 2
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Implementation
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```jsx
+<TableWithData
+  title="Posts"
+  data={data}
+  page={page}
+  limit={limit}
+  next={handleNext}
+  prev={handlePrev}
+  updateLimit={updateLimit}
+  filter_param="title"
+/>
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Props 
 
-### `yarn eject`
+| name         | prop type | isRequired | desciption                                |
+|--------------|-----------|------------|-------------------------------------------|
+| title        | string    | true       | table title                               |
+| url          | string    | true       | api url                                   |
+| filter_param | string    | true       | field name for second filter              |
+| page         | number    | true       | page number                               |
+| limit        | number    | true       | data row limit                            |
+| next         | function  | true       | handler for fetching next set of data     |
+| prev         | function  | true       | handler for fetching previous set of data |
+| updateLimit  | function  | true       | update data row limit                     |
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Use case
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+when you have implemented state management and have data at hand or your are working with 
+api where you have less control to edit. 
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+## Starting the project 
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Folder structure - 
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- src 
+---component
+------table-with-data.jsx
+------table.jsx
+---index.css
+---root.jsx
+---index.js
 
-### Code Splitting
+start with 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+yarn start
+```
+or 
 
-### Analyzing the Bundle Size
+```bash
+npm run start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Build with 
 
-### Making a Progressive Web App
+```bash
+yarn build
+```
+or 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```bash
+npm run build
+```
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
