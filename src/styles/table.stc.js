@@ -39,14 +39,20 @@ export const TableFilter = styled.div`
 
 export const TableSTC = styled.table`
   width: 100%;
+  height: 480px;
+  overflow-y: auto;
   table-layout: fixed;
 
   display: block;
   overflow: scroll;
   text-align: left;
   border-radius: 5px;
+  position: relative;
+  
   thead {
     width: 100%;
+    position: sticky;
+    top: 0;
     background-color: #272739;
     color: #fff;
     th {
