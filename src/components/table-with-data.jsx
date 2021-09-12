@@ -145,7 +145,7 @@ const TableWithData = ({
           {filtered(data) && filtered(data).length < limit ? (
             ""
           ) : (
-            <button className="action-btn" onClick={() => next()}>
+            <button className="action-btn" onClick={() => next()} id="next">
               NEXT
             </button>
           )}
